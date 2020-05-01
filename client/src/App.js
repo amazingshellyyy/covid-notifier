@@ -5,9 +5,8 @@ import GetLoc from './components/GetLocationForm';
 
 const App = () => {
     return (
-        <div>
+        <div className="ui container" >
             <SignUp/>
-            <GetLoc/>
         </div>
     )
 }
