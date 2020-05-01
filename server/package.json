@@ -4,12 +4,19 @@
   "description": "covid-notifier",
   "main": "server.js",
   "scripts": {
+    "dev": "nodemon -r esm server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "amazingshellyyy",
   "license": "MIT",
   "dependencies": {
+    "cors": "^2.8.5",
+    "esm": "^3.2.25",
     "express": "^4.17.1",
-    "mongoose": "^5.9.11"
+    "mongoose": "^5.9.11",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.3"
   }
 }
