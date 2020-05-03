@@ -4,17 +4,23 @@ const mongoose = require('mongoose');
 
 
 const UserSchema = mongoose.Schema({
-  cellNum: {
-    type: String,
-    required: [true, 'Cellphone Number is required'],
-  },
-  verifyCode: {
-      type: Number
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  }
+    cellNum: {
+        type: String,
+        required: [true, 'Cellphone Number is required'],
+    },
+    verifyCode: {
+        type: Number
+    },
+    zipCode: {
+        type: Number
+    },
+    County: {
+        type: String
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    }
 });
 
 

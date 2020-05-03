@@ -6,8 +6,9 @@ import User from './user/controller';
 
 
 router.get('/', (req, res) => res.send('Hello world'));
-router.post('/signup',User.sendsms, User.signup );
-router.post('/verify',User.verify);
+router.post('/signup',User.signup );
+router.post('/:uid/verify',User.verify);
+router.post('/:uid/setZip', User.setZip);
 router.post('/sms', (req, res) => {
     
     const twiml = new MessagingResponse();
