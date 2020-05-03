@@ -29,5 +29,22 @@ export default {
             })
             .then(message => next())
             .catch(()=> res.status(500))
+    },
+    verify: async(req, res) => {
+        try{
+
+            const foundUser = await User.findOne({cellNum:req.body.cellNum});
+            if(!foundUser){
+                return res.status(500).json({message:'user do not exist'})
+            }
+            if(req.body.verifyCode === foundUser.verifyCode){
+                res.status(200).json({message:'User verified'})
+            } else {
+                res.status(200).json({message:'incorrect verify code, please try again'})
+            }
+        } catch(err) {
+            console.log(err)
+            return res.status(500).json(err)
+        }
     }
 }
