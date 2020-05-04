@@ -1,6 +1,6 @@
 git add .
 git commit -m "prepare for server deploy"
-git subtree push --prefix backend heroku master
+git subtree push --prefix heroku master
 echo ">> backend deployed successfully"
 cd ./client
 npm run build
