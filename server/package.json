@@ -4,6 +4,7 @@
   "description": "covid-notifier",
   "main": "server.js",
   "scripts": {
+    "start": "node -r esm server.js",
     "dev": "nodemon -r esm server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
