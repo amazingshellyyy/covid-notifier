@@ -10,7 +10,7 @@ import bodyParser from 'body-parser';
 const app = express();
 
 //-----configuration variable-----//
-const PORT = config.domain;
+const PORT = process.env.PORT || 8080;
 
 
 //----set up db----//
