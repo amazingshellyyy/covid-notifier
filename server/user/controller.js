@@ -1,8 +1,9 @@
 import User from './model';
 import axios from 'axios';
+import config from '../config';
 //twilio
-const accountSid = 'ACa439eb4ab30db962f67d106bc902b2d5';
-const authToken = 'e68aed3e6afffa667111fa57bf785fdf';
+const accountSid = config.twilio.sid;
+const authToken = config.twilio.token;
 const client = require('twilio')(accountSid, authToken);
 
 const send_sms = (message, to) => {
