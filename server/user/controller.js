@@ -18,13 +18,14 @@ const send_sms = (message, to) => {
 
 export default {
     signup: async(req, res, next) => {
+        console.log(req.body)
         try {
             const foundUser = await User.findOne({cellNum:req.body.cellNum});
             if(foundUser){
                 return res.status(500).json({message:'this cellphone number is already registered! Try another one.'})
             }
         } catch(err) {
-            return res.status(500)
+            return res.status(500).json({messagez:'something wrong'})
         }
         const verifyCode = Math.floor(Math.random()*(10000-1000) + 1000);
         req.newuser = {
@@ -60,8 +61,11 @@ export default {
         }
     },
     setZip: async( req, res ) => {
+        if (req.body.zip < 10000) {
+            return res.status(500).json({message: 'This zip code is invalid. Please try again.'})
+        }
         if (req.body.zip < 90001 || req.body.zip > 96162) {
-            return res.status(500).json({message: 'This zip code is not in California'})
+            return res.status(500).json({message: 'This zip code is not in California. Please try again.'})
         }
         try {
             let curCase = 'no report yet';
@@ -82,13 +86,13 @@ export default {
                 const updatedUser = await User.findByIdAndUpdate(req.params.uid,{zipCode:req.body.zip});
                 
                 send_sms(`This is your first case report: current Covid Case at ${Info.data.city} : ${curCase}`, updatedUser.cellNum)
-                res.status(200).json({message:'succeeefully send sms'});
+                res.status(200).json({message:'Please check your phone for your first text from us!'});
             } catch(err) {
-                return res.status(500)
+                return res.status(500).json({message:'something went wrong, try again later'})
             }
 
         } catch(err){
-            return res.status(500)
+            return res.status(500).json({message: 'something went wrong when try to get the county, try again later'})
         }
     }
 }
