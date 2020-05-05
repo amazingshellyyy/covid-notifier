@@ -1,33 +1,38 @@
 import User from './model';
 import axios from 'axios';
 import config from '../config';
+import { CompositionPage } from 'twilio/lib/rest/video/v1/composition';
 //twilio
 const accountSid = config.twilio.sid;
 const authToken = config.twilio.token;
 const client = require('twilio')(accountSid, authToken);
 
 const send_sms = (message, to) => {
+    console.log('hi in sms')
     client.messages
             .create({
                 body: message,
                 from: '+16282658951',
                 to: to
             })
-            .then(res => res)
-            .catch(()=> res.status(500))
+            .then(res => console.log('successfully send sms'))
+            .catch(err => {
+                console.log({err})
+                res.status(500).json({message: 'something wrong with twilio'})
+            })
 }
 
 export default {
     signup: async(req, res, next) => {
         console.log(req.body)
-        try {
-            const foundUser = await User.findOne({cellNum:req.body.cellNum});
-            if(foundUser){
-                return res.status(500).json({message:'this cellphone number is already registered! Try another one.'})
-            }
-        } catch(err) {
-            return res.status(500).json({messagez:'something wrong'})
-        }
+        // try {
+        //     const foundUser = await User.findOne({cellNum:req.body.cellNum});
+        //     if(foundUser){
+        //         return res.status(500).json({message:'this cellphone number is already registered! Try another one.'})
+        //     }
+        // } catch(err) {
+        //     return res.status(500).json({message:'something wrong'})
+        // }
         const verifyCode = Math.floor(Math.random()*(10000-1000) + 1000);
         req.newuser = {
             ...req.body,
@@ -40,7 +45,7 @@ export default {
            const createdUser = await User.create(req.newuser);
            res.status(200).json({message: 'just create a temp user', createdUser})
        } catch(err) {
-           return res.status(500).json({err})
+           return res.status(500).json({err,message:'something wrong when try to create user'})
        }
     },
     verify: async(req, res) => {
@@ -72,7 +77,7 @@ export default {
             let curCase = 'no report yet';
             console.log(req.params.uid)
             console.log(req.body.zip)
-            const Info = await axios.get(`https://www.zipcodeapi.com/rest/JyMTpydCOpnE0yDFIeSBPfgpxgbVHeJMynIc4XKMyTEl8nVGDh4MVs8YzUcpikXr/info.json/${req.body.zip}/degrees`)
+            const Info = await axios.get(`https://www.zipcodeapi.com/rest/${process.env.ZIP_API_KEY}/info.json/${req.body.zip}/degrees`)
             console.log(Info.data.city);
             try {
                 const countyCases = await axios.get('https://amazingshellyyy.com/covid19-api/US-CA/current.json');

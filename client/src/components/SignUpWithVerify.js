@@ -21,6 +21,12 @@ class SignUpWithVerify extends React.Component{
 
     cleanData = (data) => {
         console.log(data)
+        if (data.length < 10) {
+            this.setState({
+                errMsg: 'the number should be 10 digits.'
+            })
+            return;
+        }
         if (data.length === 10) {
             return '+1'.concat(data)
         }
@@ -35,9 +41,12 @@ class SignUpWithVerify extends React.Component{
 
     getCode = (e) => {
         e.preventDefault();
+
+        
         console.log(`${process.env.REACT_APP_API_URL}/signup`)
         const cellNum = this.cleanData(this.state.cellNum);
-        axios.post(`${process.env.REACT_APP_API_URL}/signup`,{cellNum})
+        if (cellNum && cellNum.length === 12) {
+            axios.post(`${process.env.REACT_APP_API_URL}/signup`,{cellNum})
             .then(res => {
                 console.log(res.data)
                 this.setState({
@@ -47,14 +56,15 @@ class SignUpWithVerify extends React.Component{
                     uid: res.data.createdUser._id,
                     cellNum: res.data.createdUser.cellNum
                 })
-                console.log(this.props)
                 this.props.setUid(res.data.createdUser._id);
             }).catch(err => {
-                // this.setState({
-                //     errMsg: err.response.data.message
-                // })
+                this.setState({
+                    errMsg: err.response.data.message
+                })
                 console.log(err.response)
             })
+        }
+        
     }
 
 
@@ -86,7 +96,7 @@ class SignUpWithVerify extends React.Component{
                 <form className="ui form" onSubmit={this.getCode} style={{margin:'0 auto',marginTop:'10vh',width:'20vw', textAlign:'center'}}>
                 <div className="field">
                 <label>Phone Number</label>
-                <input type="tel" name="cellNum" placeholder="123-456-7890" onChange={this.inputChange}/>
+                <input type="tel" name="cellNum" placeholder="123-456-7890" onChange={this.inputChange} required/>
                 </div>
                 {this.state.errMsg&& <p>{this.state.errMsg}</p>}
                 <button className="ui button" type="submit">Get Verification Code</button>
@@ -95,7 +105,7 @@ class SignUpWithVerify extends React.Component{
                 <form className="ui form" onSubmit={this.sendCode} style={{margin:'0 auto',marginTop:'10vh',width:'20vw', textAlign:'center'}}>
                 <div className="field">
                 <label>4 digit verify Code</label>
-                <input type="number" name="verifyCode" placeholder='1234' onChange={this.inputChange}/>
+                <input type="number" name="verifyCode" placeholder='1234' onChange={this.inputChange} required/>
                 <a href="" onClick={this}>{"Didn't receive it? Click to send again."}</a>
                 </div>
                 {this.state.errMsg&& <p>{this.state.errMsg}</p>}
