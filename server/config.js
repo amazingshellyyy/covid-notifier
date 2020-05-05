@@ -11,5 +11,6 @@ export default {
     twilio: {
         sid: process.env.TWILIO_SID,
         token: process.env.TWILIO_TOKEN
-    }
+    },
+    environment: process.env.NODE_ENV || 'development'
 }
