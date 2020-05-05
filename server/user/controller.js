@@ -1,7 +1,6 @@
 import User from './model';
 import axios from 'axios';
 import config from '../config';
-import { CompositionPage } from 'twilio/lib/rest/video/v1/composition';
 //twilio
 const accountSid = config.twilio.sid;
 const authToken = config.twilio.token;
@@ -112,12 +111,12 @@ export default {
                 }
                 res.status(200).json({message:'Please check your phone for your first text from us!'});
             } catch(err) {
-                
+                console.log(err);
                 return res.status(500).json({message:'something went wrong, try again later'})
             }
 
         } catch(err){
-            
+            console.log(err)
             return res.status(500).json({message: 'something went wrong when try to get the county, try again later'})
         }
     }
