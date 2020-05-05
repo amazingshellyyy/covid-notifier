@@ -78,8 +78,8 @@ export default {
             let curCase = 'no report';
             console.log(req.body.zip)
             const Info = await axios.get(`https://api.zip-codes.com/ZipCodesAPI.svc/1.0/QuickGetZipCodeDetails/${req.body.zip}?key=${process.env.ZIP_API_KEY}`)
-            const data = Info.data;
-            const cleanData = JSON.parse(`{${data.slice(6)}`);
+            const workingData = Info.data;
+            const cleanData = JSON.parse(`{${workingData.slice(6)}`);
             console.log(cleanData);
 
             
