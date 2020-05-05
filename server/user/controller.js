@@ -27,14 +27,14 @@ const send_sms = (message, to) => {
 export default {
     signup: async(req, res, next) => {
         
-        // try {
-        //     const foundUser = await User.findOne({cellNum:req.body.cellNum});
-        //     if(foundUser){
-        //         return res.status(500).json({message:'this cellphone number is already registered! Try another one.'})
-        //     }
-        // } catch(err) {
-        //     return res.status(500).json({message:'something wrong'})
-        // }
+        try {
+            const foundUser = await User.findOne({cellNum:req.body.cellNum});
+            if(foundUser){
+                return res.status(500).json({message:'this cellphone number is already registered! Try another one.'})
+            }
+        } catch(err) {
+            return res.status(500).json({message:'something wrong'})
+        }
         const verifyCode = Math.floor(Math.random()*(10000-1000) + 1000);
         req.newuser = {
             ...req.body,
