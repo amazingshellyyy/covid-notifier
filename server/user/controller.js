@@ -79,6 +79,7 @@ export default {
             console.log(req.body.zip)
             const Info = await axios.get(`https://api.zip-codes.com/ZipCodesAPI.svc/1.0/QuickGetZipCodeDetails/${req.body.zip}?key=${process.env.ZIP_API_KEY}`)
             const workingData = Info.data;
+            console.log(typeof workingData)
             const cleanData = JSON.parse(`{${workingData.slice(6)}`);
             console.log(cleanData);
 
